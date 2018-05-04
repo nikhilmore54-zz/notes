@@ -1,0 +1,11 @@
+<%= form_for @changeset, note_path(@conn, :update, @note), fn f -> %>
+  <div class="form-group">
+    <%= text_input f, :title, placeholder: "Title", class: "form-control" %>
+    <br />
+    <%= textarea f, :note, placeholder: "Note", class: "form-control", rows: "5" %>
+    <%= error_tag f, :title %>
+  </div>
+  <%= unless Plug.Conn.get_session(@conn, :current_user) == nil do %>
+    <%= submit "Save Topic", class: "btn btn-primary" %>
+  <% end %>
+<% end %>

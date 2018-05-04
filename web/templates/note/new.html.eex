@@ -1,0 +1,9 @@
+<%= form_for @changeset, note_path(@conn, :create), fn f -> %>
+  <div class="form-group">
+    <%= text_input f, :title, placeholder: "Title", class: "form-control" %>
+  	<%= textarea f, :note, placeholder: "Note", class: "form-control", rows: "6" %>
+  	<%= error_tag f, :note %>
+    <br />
+  	<%= submit "Save Note", class: "btn btn-primary" %>
+  </div>
+<% end %>

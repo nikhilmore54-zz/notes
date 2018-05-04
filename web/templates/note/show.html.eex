@@ -1,0 +1,15 @@
+<div class="collection-item">
+  <b><%= @note.title %></b>
+  <br />
+  <%= @note.note %>
+  <br /> <b>Tags: </b>
+    <%= for [k, v] <- @tag_list do %>
+      <%= k %>(<%= v %>),
+    <% end %>
+
+  <div class="bottom">
+    <%= unless Plug.Conn.get_session(@conn, :current_user) == nil do %>
+      <%= link "Edit", to: note_path(@conn, :edit, @note) %>
+      <%= link "Delete", to: note_path(@conn, :delete, @note), method: :delete, data: [confirm: "Are you sure?"]  %>
+    <% end %>
+</div>

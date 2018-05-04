@@ -1,0 +1,24 @@
+<div class="nav-wrapper container">
+  <p class="alert alert-info" role="alert" style="min-height:25px"><%= get_flash(@conn, :info) %></p>
+  <p class="alert alert-danger" role="alert" style="min-height:25px"><%= get_flash(@conn, :error) %></p>
+</div>
+
+<h5>Notes</h5>
+<ul class="collection">
+  <%= for note <- @notes do %>
+  	<li class="collection-item">
+  	  <%= link note.title, to: note_path(@conn, :show, note) %>
+  	  <div class="right">
+        <%= unless Plug.Conn.get_session(@conn, :current_user) == nil do %>
+      	  <%= link "Edit", to: note_path(@conn, :edit, note) %>
+      	  <%= link "Delete", to: note_path(@conn, :delete, note), method: :delete, data: [confirm: "Are you sure?"] %>
+        <% end %>
+  	</li>
+  <% end %>
+</ul>
+
+<div class="fixed-action-btn">
+  <%= link to: note_path(@conn, :new),  class: "btn-floating btn-large waves-effect waves-light red" do %>
+  	<i class="material-icons">add</i>
+  <% end %>
+</div>
