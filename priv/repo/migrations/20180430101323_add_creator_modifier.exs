@@ -3,8 +3,8 @@ defmodule Notes.Repo.Migrations.AddCreatorModifier do
 
   def change do
     alter table(:notes) do
-      modify :creator, :string
-      modify :modifier, :string
+      add :user_id, :integer
+      add :modifier, :integer
     end
   end
 end

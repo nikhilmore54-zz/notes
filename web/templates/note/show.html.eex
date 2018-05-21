@@ -1,15 +1,21 @@
 <div class="collection-item">
-  <b><%= @note.title %></b>
   <br />
-  <%= @note.note %>
-  <br /> <b>Tags: </b>
-    <%= for [k, v] <- @tag_list do %>
-      <%= k %>(<%= v %>),
+  <h6>
+  <b><%= @note.title %></b>
+  </h6>
+  <%= Notes.Note.sanitize_html(@note.note) %>
+   <b>Tags: </b>
+    <%= unless @tag_list == nil do %>
+      <%= for [k, v] <- @tag_list do %>
+        <%= k %>(<%= v %>)<%=  %>
+      <% end %>
     <% end %>
-
   <div class="bottom">
     <%= unless Plug.Conn.get_session(@conn, :current_user) == nil do %>
-      <%= link "Edit", to: note_path(@conn, :edit, @note) %>
-      <%= link "Delete", to: note_path(@conn, :delete, @note), method: :delete, data: [confirm: "Are you sure?"]  %>
+    <%= if @role > 1 do %>
+      <%= link "Share", to: note_path(@conn, :share, @note, role: @role) %>
+      <%= link "Edit", to: note_path(@conn, :edit, @note, role: @role) %>
+    <% end %>
+      <%= if @role == 3, do: link "Delete", to: note_path(@conn, :delete, @note), method: :delete, data: [confirm: "Are you sure?"] %>
     <% end %>
 </div>

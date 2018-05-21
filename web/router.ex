@@ -21,7 +21,7 @@ defmodule Notes.Router do
     delete "/logout", Notes.SessionController, :delete
 
     get    "/:id/share", Notes.NoteController, :share
-    put   "/:id/share", Notes.NoteController, :allow
+    put   "/:id/share", Notes.NoteController, :share_notes
 
     resources "/", Notes.NoteController
     resources "/registrations", Notes.RegistrationController, only: [:new, :create]

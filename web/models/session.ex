@@ -5,7 +5,7 @@ defmodule Notes.Session do
     user = repo.get_by(User, email: String.downcase(params["email"]))
     case authenticate(user, params["crypted_password"]) do
       true -> {:ok, user}
-      _    -> :error
+      _    -> {:error, "Incorrect credentials"}
     end
   end
 
@@ -17,8 +17,10 @@ defmodule Notes.Session do
   end
 
   def current_user(conn) do
+    # IO.inspect conn
     id = Plug.Conn.get_session(conn, :current_user)
-    if id, do: Notes.Repo.get(User, id)
+    # if id, do: Notes.Repo.get(User, id)
+    if id, do: id
   end
 
   def logged_in?(conn), do: !!current_user(conn)

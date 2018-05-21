@@ -2,23 +2,33 @@
   <p class="alert alert-info" role="alert" style="min-height:25px"><%= get_flash(@conn, :info) %></p>
   <p class="alert alert-danger" role="alert" style="min-height:25px"><%= get_flash(@conn, :error) %></p>
 </div>
-
 <h5>Notes</h5>
-<ul class="collection">
-  <%= for note <- @notes do %>
-  	<li class="collection-item">
-  	  <%= link note.title, to: note_path(@conn, :show, note) %>
-  	  <div class="right">
-        <%= unless Plug.Conn.get_session(@conn, :current_user) == nil do %>
-      	  <%= link "Edit", to: note_path(@conn, :edit, note) %>
-      	  <%= link "Delete", to: note_path(@conn, :delete, note), method: :delete, data: [confirm: "Are you sure?"] %>
+
+  <%= if Plug.Conn.get_session(@conn, :current_user) == nil do %>
+    Login to see Notes
+  <% else %>
+    <%= if @notes == [] do %>
+      No notes available for this user
+    <% else %>
+      <%= for note_role <- @notes do %>
+        <% [new_note , role, title] = note_role %>
+        <li class="collection-item">
+        <%= if role > 0, do: link title, to: note_path(@conn, :show, new_note, role: role) %>
+        <div class="right">    
+        <%= if role == 3, do: link "Delete", to: note_path(@conn, :delete, new_note), method: :delete, data: [confirm: "Are you sure?"] %> 
+        <%= if role > 1 do %>
+          <%= link "Edit", to: note_path(@conn, :edit, new_note, role: role) %>
+          <%= link "Share", to: note_path(@conn, :share, new_note, role: role) %>
         <% end %>
-  	</li>
+        </div>
+        </li>
+      <% end %>    
+    <% end%>
   <% end %>
 </ul>
 
-<div class="fixed-action-btn">
-  <%= link to: note_path(@conn, :new),  class: "btn-floating btn-large waves-effect waves-light red" do %>
-  	<i class="material-icons">add</i>
-  <% end %>
-</div>
+<%# <div class="fixed-action-btn"> %>
+  <%# <%= link to: note_path(@conn, :new),  class: "btn-floating btn-large waves-effect waves-light red" do %> 
+  	<%# <i class="material-icons">add</i> %>
+  <%# <% end %> 
+<%# </div> %>

@@ -39,5 +39,5 @@ config :notes, Notes.Repo,
   username: "postgres",
   password: "postgres",
   database: "notes_dev",
-  hostname: "localhost",
+  hostname: "127.0.0.1",
   pool_size: 10
